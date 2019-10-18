@@ -1,0 +1,38 @@
+.clearfix{
+  &:before,
+  &:after{
+    content: '';
+    display: table;
+  }
+  &:after{
+    clear: both;
+  }
+}
+.f-left{
+  float: left;
+}
+.f-right{
+  float: right;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s;
+}
+
+.fade-enter,
+.fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+  opacity: 0;
+}
+.f-12{
+  font-size: 12px !important;
+}
+.f-14{
+  font-size: 14px !important;
+}
+.f-22{
+  font-size: 22px !important;
+}
+.f-24{
+  font-size: 24px !important;
+}
