@@ -1,8 +1,5 @@
 const express = require('express')
-// const getFiction = require('../../scripts/biquku/getFiction.js')
 const BookCity = require('../../model/bookCity')
-const path = require('path')
-const fs = require('fs')
 const fn = require('../../fn')
 const baseCfg = require('../base.cfg')
 const requestCpter = require('../../scripts/biquku/getChapter')
@@ -41,7 +38,7 @@ router.get('/', async (req, res) => {
           page,
           count
         }),
-        total: await fn.modelCount(BookCity)
+        total: await fn.modelCount(BookCity, mappingType[type])
       }
     })
   } catch (e) {
@@ -49,6 +46,7 @@ router.get('/', async (req, res) => {
   }
 })
 
+// 获取章节
 router.get('/getChapter', async (req, res) => {
   let { bookId, chapterNumber } = req.query
   let data = baseCfg.respInfo
@@ -74,46 +72,7 @@ router.get('/getChapter', async (req, res) => {
   return res.status(200).send(data)
 })
 
-router.get('/saveBooks', async (req, res) => {
-/*  await getFiction({
-    hostname: 'http://www.biquku.la',
-    url: 'xiaoshuo',
-    count: 2,
-    type: '修真',
-    page: 145
-  }) */
-  fs.readFile(path.resolve(__dirname, '../../scripts/books/book.json'), (err, data) => {
-    if (err) {
-      console.log(err)
-    } else {
-      const books = JSON.parse(data.toString())
-      books.forEach(({
-        bookId,
-        pic,
-        name,
-        author,
-        type,
-        status,
-        content
-      }, index) => {
-        const bC = new BookCity({
-          bookId,
-          pic,
-          name,
-          author,
-          type,
-          status: '',
-          content
-        })
-        bC.save(() => {
-          console.log(`${index}-存入一本书${name}`)
-          return res.send(`${index}-存入一本书${name}`)
-        })
-      })
-    }
-  })
-})
-
+// 获取书籍
 router.get('/getBooks/:type', (req, res) => {
   if (!req.params.type) {
     return res.render('books', {

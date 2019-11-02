@@ -8,6 +8,7 @@ const path = require('path')
 const cheerio = require('cheerio')
 const _initMongoDB = require('../../model')
 const BookCity = require('../../model/bookCity')
+const save2File = require('../../fn/save2File')
 
 const getBooks = async ({ hostname, url, count = 1, page = 0, type } = {}) => {
   let books = []
@@ -83,30 +84,6 @@ const getBookDetail = async (bookId, type, hostname, books) => {
       })
   })
 }
-const saveBooksFile = async (bookTable, fileName, number) => {
-  // 创建文件目录
-  await new Promise((resolve, reject) => {
-    fs.mkdir(path.join(__dirname, '../books'), () => {
-      const writeStream = fs.createWriteStream(path.join(__dirname, `../books/${fileName}${number}.json`))
-      writeStream.on('open', () => {
-        console.log('打开')
-      })
-      writeStream.on('ready', () => {
-        console.log('开始')
-        writeStream.write(JSON.stringify(bookTable))
-        writeStream.end()
-      })
-      writeStream.on('finish', () => {
-        console.log(`文件写入成功`)
-      })
-      writeStream.on('close', () => {
-        console.log('关闭')
-        resolve()
-      })
-    })
-  })
-  return `${fileName}${number}`
-}
 const saveModelBooks = async (fileName) => {
   await new Promise((resolve, reject) => {
     fs.readFile(path.resolve(__dirname, `../books/${fileName}.json`), (err, data) => {
@@ -161,14 +138,14 @@ const loopGetBooks = async ({ hostname, url, count, page, type, pageNum = 5 }) =
     // 爬取五张页面后，存取一次，然后清除数组，避免堆区占满
     if (page % pageNum === (pageNum > 1 ? 1 : 0)) {
       // 最好做一次分段存取 否则js内存堆区不够用
-      await saveModelBooks(await saveBooksFile(bookTable, type, parseInt(page / pageNum)))
+      await saveModelBooks(await save2File(bookTable, '../books/', `${type}${parseInt(page / pageNum)}.json`))
       bookTable = []
     }
     page--
   }
   console.log('爬取完成！')
 }
-const toSave = async () => {
+const handle2Save = async () => {
   let index = 1
   const mapping = {
     '玄幻': 339,
@@ -194,4 +171,6 @@ const toSave = async () => {
   }
 }
 
-toSave()
+(async () => {
+  await handle2Save()
+})()

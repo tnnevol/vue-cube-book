@@ -58,12 +58,15 @@ export default {
     getHeadTitle () {
       const selectedItem = this.btmMenu.menus[this.btmMenu.selected]
       const goName = selectedItem.routerName
-      if (this.$route.name !== goName) {
+      if (this.checkRouter && this.$route.name !== goName) {
         this.routerPush({
           name: goName
         })
       }
       return selectedItem.name
+    },
+    checkRouter () {
+      return this.btmMenu.menus.filter(r => r.routerName === this.$route.name).length > 0
     }
   },
   components: {

@@ -5,7 +5,10 @@ const book = {
   namespaced: true,
   state: {
     store: [],
-    readingBookId: getStorage('readingBookId')
+    readingBookId: getStorage('readingBookId'),
+    userReadingMark: getStorage('userReadingMark') || {
+      flag: 0
+    }
   },
   mutations: {
     REFRESH_STORE (state, newValue) {
@@ -17,6 +20,15 @@ const book = {
     SET_READING_BOOK_ID (state, newValue) {
       state.readingBookId = newValue
       setStorage('readingBookId', newValue)
+    },
+
+    SET_USER_READING_MARK (state, newValue) {
+      state.userReadingMark[state.readingBookId] = {
+        chapterNumber: newValue
+      }
+      // 这个可以让getter触发
+      state.userReadingMark.flag++
+      setStorage('userReadingMark', state.userReadingMark)
     }
   },
   actions: {

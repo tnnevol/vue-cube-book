@@ -12,7 +12,7 @@ console.log(ck.yellow.bold(`process.env.NODE_ENV: ${process.env.NODE_ENV}\n`))
 
 module.exports = {
   runtimeCompiler: true, // 是否使用包含运行时编译器的 Vue 构建版本
-  publicPath: './',
+  publicPath: '/',
   lintOnSave: true,
   transpileDependencies: [], // 默认babel-loader忽略mode_modules，这里可增加例外的依赖包名
   productionSourceMap: false, // 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度

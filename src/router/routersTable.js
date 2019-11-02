@@ -4,6 +4,7 @@ module.exports = [
     name: 'home',
     component: 'Home',
     folderName: 'views/main',
+    redirect: '/bookCity',
     children: [
       {
         // 书架

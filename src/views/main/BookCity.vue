@@ -89,12 +89,14 @@ export default {
       this.$refs.bookTableScroll.scrollTo(0, 0, 200)
     },
     seeDetail ({ id }) {
-      // console.log(id)
-      // this['book/getChapter']({ bookId: id, chapterNumber: 0 })
+      // 进入存储 Book_id
       this['book/SET_READING_BOOK_ID'](id)
       this.routerPush({
         name: 'readView'
       })
+    },
+    scrollTo () {
+
     },
     ...mapActions([
       'book/getBooks'
@@ -106,7 +108,11 @@ export default {
   computed: {
     ...mapGetters([
       'store'
-    ])
+    ]),
+
+    navBarTpl () {
+      return this.$refs.navBar
+    }
   },
   components: {
     bookList

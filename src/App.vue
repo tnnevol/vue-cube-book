@@ -1,6 +1,8 @@
 <template>
   <div id="app" ref="appFrame">
-    <router-view/>
+    <keep-alive :exclude="/ReadView/">
+      <router-view/>
+    </keep-alive>
     <div class="loading-wrapper" v-if="loading">
       <cube-loading :size="40"></cube-loading>
     </div>
